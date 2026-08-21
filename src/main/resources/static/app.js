@@ -152,7 +152,8 @@ document.addEventListener('DOMContentLoaded', () => {
       });
 
       if (!response.ok) {
-        throw new Error(`Erro na requisição: ${response.status} ${response.statusText}`);
+        const errorText = await response.text();
+        throw new Error(errorText || `Erro HTTP ${response.status} ${response.statusText}`);
       }
 
       const data = await response.json();
@@ -353,9 +354,16 @@ document.addEventListener('DOMContentLoaded', () => {
         body: formData
       });
 
-      const result = await response.json();
+      let result;
+      const contentType = response.headers.get('content-type');
+      if (contentType && contentType.includes('application/json')) {
+        result = await response.json();
+      } else {
+        const errorText = await response.text();
+        result = { error: errorText || `Erro HTTP ${response.status} (${response.statusText})` };
+      }
 
-      if (response.ok) {
+      if (response.ok && !result.error) {
         uploadAlert.className = 'alert alert-success';
         uploadAlert.innerHTML = `<i class="fa-solid fa-circle-check"></i> ${result.message || 'Documento indexado com sucesso!'}`;
         uploadAlert.style.display = 'flex';
