@@ -1,0 +1,38 @@
+spring:
+  application:
+    name: rag-alura
+
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 50MB
+      max-request-size: 50MB
+
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/rag_db}
+    username: ${SPRING_DATASOURCE_USERNAME:postgres}
+    password: ${SPRING_DATASOURCE_PASSWORD:postgrespassword}
+    driver-class-name: org.postgresql.Driver
+
+  ai:
+    openai:
+      base-url: ${GROQ_BASE_URL:https://api.groq.com/openai}
+      api-key: ${GROQ_API_KEY:gsk_sua_chave_aqui}
+      chat:
+        options:
+          model: ${GROQ_MODEL:llama-3.3-70b-versatile}
+          temperature: 0.2
+      embedding:
+        enabled: false
+
+    vectorstore:
+      pgvector:
+        index-type: HNSW
+        distance-type: COSINE_DISTANCE
+        dimensions: 384
+        initialize-schema: true
+
+server:
+  port: ${PORT:8080}
+  tomcat:
+    connection-timeout: 300000
