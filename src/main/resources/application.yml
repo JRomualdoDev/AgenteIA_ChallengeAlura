@@ -22,8 +22,14 @@ spring:
         options:
           model: ${GROQ_MODEL:llama-3.3-70b-versatile}
           temperature: 0.2
+      # Embedding via Groq desabilitado (não suportado pela Groq)
       embedding:
         enabled: false
+
+    # ONNX Embedding - local e gratuito
+    embedding:
+      onnx:
+        model-path: classpath:/models/all-MiniLM-L6-v2.onnx
 
     vectorstore:
       pgvector:

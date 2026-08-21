@@ -35,6 +35,13 @@
 			<version>${spring-ai.version}</version>
 		</dependency>
 
+		<!-- Spring AI ONNX Embedding (local e gratuito) -->
+		<dependency>
+			<groupId>org.springframework.ai</groupId>
+			<artifactId>spring-ai-onnx-embedding-spring-boot-starter</artifactId>
+			<version>${spring-ai.version}</version>
+		</dependency>
+
 		<!-- Spring AI PgVector Store (Supabase / Neon) -->
 		<dependency>
 			<groupId>org.springframework.ai</groupId>
