@@ -4,14 +4,10 @@
  */
 
 document.addEventListener('DOMContentLoaded', () => {
-  // --- Configuração da API ---
-  // Se aberto como arquivo local (file://), usa http://localhost:8080 como fallback.
-  // Em produção (Railway) ou no Spring Boot local, usa URLs relativas.
-  const API_BASE_URL = window.location.protocol === 'file:' ? 'http://localhost:8080' : '';
-
+  // --- Endpoints da API (Rotas relativas que usam automaticamente o domínio do Railway) ---
   const ENDPOINTS = {
-    chat: `${API_BASE_URL}/api/v1/chat`,
-    upload: `${API_BASE_URL}/api/v1/documents/upload`
+    chat: '/api/v1/chat',
+    upload: '/api/v1/documents/upload'
   };
 
   // --- Elementos do DOM ---
@@ -50,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const serverUrlDisplay = document.getElementById('serverUrlDisplay');
 
   if (serverUrlDisplay) {
-    serverUrlDisplay.textContent = API_BASE_URL || window.location.origin;
+    serverUrlDisplay.textContent = window.location.origin;
   }
 
   // --- Funções de Navegação de Abas ---
