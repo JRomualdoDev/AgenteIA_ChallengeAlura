@@ -5,11 +5,9 @@
 
 document.addEventListener('DOMContentLoaded', () => {
   // --- Configuração da API ---
-  // Se estiver rodando no mesmo host do backend (Spring Boot), usa URL relativa.
-  // Se estiver rodando standalone (ex: Live Server ou file://), usa http://localhost:8080
-  const API_BASE_URL = (window.location.origin.startsWith('http://localhost:8080') || window.location.origin.startsWith('http://127.0.0.1:8080'))
-    ? ''
-    : 'http://localhost:8080';
+  // Se aberto como arquivo local (file://), usa http://localhost:8080 como fallback.
+  // Em produção (Railway) ou no Spring Boot local, usa URLs relativas.
+  const API_BASE_URL = window.location.protocol === 'file:' ? 'http://localhost:8080' : '';
 
   const ENDPOINTS = {
     chat: `${API_BASE_URL}/api/v1/chat`,
