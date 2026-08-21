@@ -32,30 +32,35 @@
 		<dependency>
 			<groupId>org.springframework.ai</groupId>
 			<artifactId>spring-ai-openai-spring-boot-starter</artifactId>
+			<version>${spring-ai.version}</version>
 		</dependency>
 
 		<!-- Spring AI Transformers Embedding (Gera Embeddings locais via ONNX leves e 100% grátis) -->
 		<dependency>
 			<groupId>org.springframework.ai</groupId>
 			<artifactId>spring-ai-transformers-embedding-spring-boot-starter</artifactId>
+			<version>${spring-ai.version}</version>
 		</dependency>
 
 		<!-- Spring AI PgVector Store (Supabase / Neon) -->
 		<dependency>
 			<groupId>org.springframework.ai</groupId>
 			<artifactId>spring-ai-pgvector-store-spring-boot-starter</artifactId>
+			<version>${spring-ai.version}</version>
 		</dependency>
 
 		<!-- Leitor de PDF -->
 		<dependency>
 			<groupId>org.springframework.ai</groupId>
 			<artifactId>spring-ai-pdf-document-reader</artifactId>
+			<version>${spring-ai.version}</version>
 		</dependency>
 
 		<!-- Apache Tika Document Reader -->
 		<dependency>
 			<groupId>org.springframework.ai</groupId>
 			<artifactId>spring-ai-tika-document-reader</artifactId>
+			<version>${spring-ai.version}</version>
 		</dependency>
 
 		<!-- PostgreSQL Driver -->
