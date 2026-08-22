@@ -62,7 +62,7 @@ public class DocumentIngestionService {
         });
 
         // 4. Armazenamento vetorial (Embeddings + PGVector)
-        log.info("[4/4] Gerando embeddings com Ollama e salvando no PGVector (isso pode levar alguns segundos)...");
+        log.info("[4/4] Gerando embeddings locais (ONNX) e salvando no PGVector (isso pode levar alguns segundos)...");
         vectorStore.add(splitDocuments);
         log.info("[4/4] Ingestão vetorial concluída com sucesso para '{}'!", filename);
     }
