@@ -1,17 +1,19 @@
 # 🤖 RAG Corporativo — Assistente Virtual de Documentos
 
 > **Challenge Alura IA & Java**  
-> Aplicação corporativa completa de **RAG (Retrieval-Augmented Generation)** com **Spring AI**, **Ollama**, **PGVector (PostgreSQL)** e **Frontend Web Integrado**.
+> Aplicação corporativa completa de **RAG (Retrieval-Augmented Generation)** com **Spring AI**, **Groq / Ollama**, **PostgreSQL com PGVector (Supabase / Docker)** e **Frontend Web Integrado**, com deploy no **Railway**.
 
 ---
 
 ## 📋 Sumário
 - [Sobre o Projeto](#-sobre-o-projeto)
+- [Projeto no Ar (Ambiente em Produção)](#-projeto-no-ar-ambiente-em-produção)
 - [Arquitetura e Fluxo do RAG](#-arquitetura-e-fluxo-do-rag)
 - [Tecnologias Utilizadas](#-tecnologias-utilizadas)
 - [Estrutura do Projeto](#-estrutura-do-projeto)
 - [Pré-requisitos](#-pré-requisitos)
-- [Instalação e Execução](#-instalação-e-execução)
+- [Instalação e Execução Local](#-instalação-e-execução-local)
+- [Configuração de Deploy (Railway & Supabase)](#-configuração-de-deploy-railway--supabase)
 - [Documentação da API REST](#-documentação-da-api-rest)
 - [Como Testar a Aplicação](#-como-testar-a-aplicação)
 - [Frontend Integrado](#-frontend-integrado)
@@ -26,8 +28,28 @@ O **RAG Corporativo** é uma solução inteligente desenvolvida para responder a
 ### Principais Benefícios:
 - 🚫 **Zero Alucinação**: O modelo responde apenas com informações contidas nos documentos carregados no banco vetorial.
 - 📚 **Citação Precisa de Fontes**: Cada resposta indica o nome do documento e o número da página correspondente.
-- 🔒 **100% Local e Gratuito**: Toda a inferência de IA e embeddings roda localmente com **Ollama** e **PostgreSQL com PGVector**, sem custos de API externa ou envio de dados corporativos para nuvens de terceiros.
+- 🔒 **Flexível (Nuvem ou Local)**: Funciona tanto em nuvem de alta disponibilidade (**Railway + Supabase + Groq**) quanto 100% local com **Ollama e Docker**.
 - 🖥️ **Interface Web Moderna**: Frontend intuitivo para consulta via chat e ingestão de arquivos PDF com Drag & Drop.
+
+---
+
+## 🌐 Projeto no Ar (Ambiente em Produção)
+
+A aplicação está pronta e configurada para execução contínua em nuvem (PaaS e DBaaS), integrando os seguintes serviços:
+
+| Serviço / Infraestrutura | Finalidade no Projeto | Detalhes Técnicos |
+| :--- | :--- | :--- |
+| 🚂 **[Railway](https://railway.app/)** | **Hospedagem da Aplicação Fullstack** | Executa o backend Java 21 / Spring Boot 3 e serve a interface Web estática diretamente na nuvem. |
+| ⚡ **[Supabase](https://supabase.com/)** | **Banco de Dados Relacional & Vetorial** | Instância PostgreSQL 16 gerenciada com extensão `pgvector` para armazenar chunks, metadados e executar buscas semânticas (HNSW). |
+| 🚀 **[Groq Cloud](https://groq.com/)** | **Inferência de LLM em Alta Velocidade** | Processamento com modelos como `llama3.3` / `gpt-oss` via Spring AI OpenAI Starter com baixíssima latência. |
+| 🧠 **ONNX Runtime / Transformers** | **Embeddings Semânticos** | Geração de vetores semânticos (`all-MiniLM-L6-v2`, 384 dimensões) diretamente na JVM, sem custos extras de API. |
+
+### 🔗 Como Acessar a Aplicação Online
+
+1. **Acesso Web**: Abra no seu navegador o endereço da aplicação no Railway:
+   👉 **`https://agenteiachallengealura-production.up.railway.app/`** *(adicione o domínio público gerado pelo seu Railway)*
+2. **Ingestão no Ar**: Vá até a aba **Upload de Documentos**, anexe arquivos PDF oficiais e selecione a categoria. Os dados serão fatiados e persistidos diretamente no **Supabase**.
+3. **Chat Inteligente**: Na aba **Chat de Dúvidas**, faça perguntas e veja o assistente buscar os trechos no banco vetorial do Supabase e formular as respostas via Groq citando as fontes.
 
 ---
 
@@ -72,18 +94,25 @@ O **RAG Corporativo** é uma solução inteligente desenvolvida para responder a
 
 ## 🛠️ Tecnologias Utilizadas
 
-### Backend
+### Backend & Frameworks
 * **Java 21**
 * **Spring Boot 3.3.4**
-* **Spring AI (1.0.0-M3)**: Framework para orquestração de IA generativa e bancos vetoriais.
-* **Spring AI Ollama**: Integração local com LLMs e geradores de embeddings.
-* **Spring AI PGVector Store**: Vetorização e busca por similaridade em PostgreSQL.
+* **Spring AI (1.0.0-M3)**: Orquestração de IA generativa, prompts e vector stores.
+* **Spring AI PGVector Store**: Conexão com PostgreSQL com extensão vetorial (HNSW, Cosine Distance).
+* **Spring AI OpenAI Starter**: Integração com API da **Groq** para geração de chat em tempo real.
+* **Spring AI Transformers (ONNX)**: Geração de embeddings localmente no backend.
 * **Apache Tika Document Reader**: Extração robusta de texto e metadados de arquivos PDF.
-* **PostgreSQL 16 com extensão `pgvector`**: Banco relacional e vetorial de alta performance.
 
-### Modelos de Inteligência Artificial (Ollama)
-* **LLM de Chat**: `llama3.2` (Leve, rápido e preciso para sumarização e respostas instrucionais).
-* **Embedding Model**: `nomic-embed-text` (Vetorização de alta qualidade em 768 dimensões).
+### Nuvem, Banco de Dados & Infraestrutura
+* 🚂 **Railway**: Hospedagem PaaS da aplicação backend Spring Boot e do frontend.
+* ⚡ **Supabase**: Banco de dados PostgreSQL 16 gerenciado com `pgvector` ativado.
+* 🚀 **Groq Cloud**: Plataforma de aceleração de LLMs (Llama 3.3 / GPT-OSS).
+* 🐳 **Docker & Docker Compose**: Ambiente local para execução de containers PGVector e Ollama.
+
+### Modelos de Inteligência Artificial
+* **LLM em Nuvem (Groq)**: `openai/gpt-oss-20b` ou `llama-3.3-70b-versatile` (respostas rápidas e precisas).
+* **LLM Local (Ollama - opcional)**: `llama3.2`
+* **Embedding Model**: `all-MiniLM-L6-v2` (ONNX local, 384 dimensões) / `nomic-embed-text` (Ollama)
 
 ### Frontend
 * **HTML5 Semântico**: Estruturação acessível com suporte a navegação por abas.
@@ -134,7 +163,7 @@ Certifique-se de ter instalado em seu ambiente:
 
 ---
 
-## 🚀 Instalação e Execução
+## 🚀 Instalação e Execução Local
 
 ### Passo 1: Subir o Banco Vetorial e o Ollama
 No diretório raiz do projeto, execute:
@@ -173,6 +202,37 @@ A aplicação iniciará na porta **`8080`**.
 ### Passo 4: Acessar a Interface Web
 Abra o navegador e acesse:
 👉 **[http://localhost:8080](http://localhost:8080)**
+
+---
+
+## ☁️ Configuração de Deploy (Railway & Supabase)
+
+Para disponibilizar o projeto no ar em produção, siga os passos abaixo:
+
+### 1. Criar o Projeto no Supabase
+1. Crie uma conta ou acesse o [Supabase](https://supabase.com/).
+2. Crie um novo projeto e defina uma senha forte para o banco de dados.
+3. No painel do Supabase, vá em **Project Settings > Database** e copie a **Connection String (JDBC/URI)**.
+   - Formato: `jdbc:postgresql://db.<project-ref>.supabase.co:5432/postgres`
+
+### 2. Configurar o Projeto no Railway
+1. Acesse o [Railway](https://railway.app/) e selecione **"New Project" > "Deploy from GitHub repo"**.
+2. Selecione o repositório do projeto. O Railway detectará automaticamente o build Maven do Java 21.
+3. Na aba **Variables** do serviço no Railway, configure as variáveis de ambiente:
+
+| Variável | Valor Exemplo / Instrução |
+| :--- | :--- |
+| `SPRING_DATASOURCE_URL` | `jdbc:postgresql://db.xxxxxx.supabase.co:5432/postgres` |
+| `SPRING_DATASOURCE_USERNAME` | `postgres` |
+| `SPRING_DATASOURCE_PASSWORD` | `<sua_senha_do_supabase>` |
+| `GROQ_API_KEY` | `gsk_...` *(obtida no console da Groq)* |
+| `GROQ_MODEL` | `openai/gpt-oss-20b` *(ou `llama-3.3-70b-versatile`)* |
+| `PORT` | `8080` *(ou gerenciada automaticamente pelo Railway)* |
+
+### 3. Gerar Domínio Público e Acessar
+1. No Railway, vá na aba **Settings > Networking** e clique em **"Generate Domain"**.
+2. O Railway fornecerá a URL pública: `https://<seu-app>.up.railway.app`.
+3. Abra a URL no navegador para utilizar o chat e fazer upload de arquivos que serão persistidos diretamente no **Supabase**!
 
 ---
 

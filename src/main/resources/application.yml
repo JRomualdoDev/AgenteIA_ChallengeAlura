@@ -20,7 +20,7 @@ spring:
       api-key: ${GROQ_API_KEY:${SPRING_AI_OPENAI_API_KEY:${OPENAI_API_KEY:gsk_sua_chave_aqui}}}
       chat:
         options:
-          model: ${GROQ_MODEL:llama-3.3-70b-versatile}
+          model: ${GROQ_MODEL:openai/gpt-oss-20b}
           temperature: 0.2
       # Embedding via Groq desabilitado (não suportado pela Groq)
       embedding:
