@@ -151,12 +151,19 @@ document.addEventListener('DOMContentLoaded', () => {
         })
       });
 
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(errorText || `Erro HTTP ${response.status} ${response.statusText}`);
+      let data;
+      const contentType = response.headers.get('content-type');
+      if (contentType && contentType.includes('application/json')) {
+        data = await response.json();
       }
 
-      const data = await response.json();
+      if (!response.ok) {
+        let errorMsg = (data && (data.answer || data.error || data.message)) 
+          ? (data.answer || data.error || data.message)
+          : `Erro HTTP ${response.status} (${response.statusText})`;
+        throw new Error(errorMsg);
+      }
+
       // Remove loading indicator
       loadingMessageElem.remove();
 
@@ -166,7 +173,7 @@ document.addEventListener('DOMContentLoaded', () => {
     } catch (error) {
       console.error('Falha ao obter resposta do assistente:', error);
       loadingMessageElem.remove();
-      appendErrorMessage(`Desculpe, ocorreu um erro ao se comunicar com o backend: ${error.message}. Verifique se o servidor Spring Boot e o Ollama estão em execução.`);
+      appendErrorMessage(`Ocorreu um erro ao consultar o assistente: ${error.message}`);
     } finally {
       sendBtn.disabled = false;
       questionInput.focus();
