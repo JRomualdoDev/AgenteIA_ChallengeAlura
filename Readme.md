@@ -47,7 +47,7 @@ A aplicação está pronta e configurada para execução contínua em nuvem (Paa
 ### 🔗 Como Acessar a Aplicação Online
 
 1. **Acesso Web**: Abra no seu navegador o endereço da aplicação no Railway:
-   👉 **`https://agenteiachallengealura-production.up.railway.app/`** *(adicione o domínio público gerado pelo seu Railway)*
+   👉 **`https://agenteiachallengealura-production.up.railway.app/`**
 2. **Ingestão no Ar**: Vá até a aba **Upload de Documentos**, anexe arquivos PDF oficiais e selecione a categoria. Os dados serão fatiados e persistidos diretamente no **Supabase**.
 3. **Chat Inteligente**: Na aba **Chat de Dúvidas**, faça perguntas e veja o assistente buscar os trechos no banco vetorial do Supabase e formular as respostas via Groq citando as fontes.
 
@@ -202,37 +202,6 @@ A aplicação iniciará na porta **`8080`**.
 ### Passo 4: Acessar a Interface Web
 Abra o navegador e acesse:
 👉 **[http://localhost:8080](http://localhost:8080)**
-
----
-
-## ☁️ Configuração de Deploy (Railway & Supabase)
-
-Para disponibilizar o projeto no ar em produção, siga os passos abaixo:
-
-### 1. Criar o Projeto no Supabase
-1. Crie uma conta ou acesse o [Supabase](https://supabase.com/).
-2. Crie um novo projeto e defina uma senha forte para o banco de dados.
-3. No painel do Supabase, vá em **Project Settings > Database** e copie a **Connection String (JDBC/URI)**.
-   - Formato: `jdbc:postgresql://db.<project-ref>.supabase.co:5432/postgres`
-
-### 2. Configurar o Projeto no Railway
-1. Acesse o [Railway](https://railway.app/) e selecione **"New Project" > "Deploy from GitHub repo"**.
-2. Selecione o repositório do projeto. O Railway detectará automaticamente o build Maven do Java 21.
-3. Na aba **Variables** do serviço no Railway, configure as variáveis de ambiente:
-
-| Variável | Valor Exemplo / Instrução |
-| :--- | :--- |
-| `SPRING_DATASOURCE_URL` | `jdbc:postgresql://db.xxxxxx.supabase.co:5432/postgres` |
-| `SPRING_DATASOURCE_USERNAME` | `postgres` |
-| `SPRING_DATASOURCE_PASSWORD` | `<sua_senha_do_supabase>` |
-| `GROQ_API_KEY` | `gsk_...` *(obtida no console da Groq)* |
-| `GROQ_MODEL` | `openai/gpt-oss-20b` *(ou `llama-3.3-70b-versatile`)* |
-| `PORT` | `8080` *(ou gerenciada automaticamente pelo Railway)* |
-
-### 3. Gerar Domínio Público e Acessar
-1. No Railway, vá na aba **Settings > Networking** e clique em **"Generate Domain"**.
-2. O Railway fornecerá a URL pública: `https://<seu-app>.up.railway.app`.
-3. Abra a URL no navegador para utilizar o chat e fazer upload de arquivos que serão persistidos diretamente no **Supabase**!
 
 ---
 
