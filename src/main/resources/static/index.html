@@ -202,8 +202,8 @@
             <ul>
               <li><strong>Extração de Texto:</strong> O Apache Tika processa os dados do arquivo PDF.</li>
               <li><strong>Divisão em Chunks:</strong> O texto é dividido em partes semânticas (Token Text Splitter).</li>
-              <li><strong>Geração de Embeddings:</strong> Cada trecho é convertido em vetor de 768 dimensões com Ollama (nomic-embed-text).</li>
-              <li><strong>Indexação PostgreSQL:</strong> Os vetores são salvos no PGVector para consultas semânticas instantâneas.</li>
+              <li><strong>Geração de Embeddings:</strong> Cada trecho é convertido em vetor de 384 dimensões localmente via ONNX / Transformers (all-MiniLM-L6-v2).</li>
+              <li><strong>Indexação PostgreSQL:</strong> Os vetores são salvos no PGVector (Supabase) para consultas semânticas instantâneas.</li>
             </ul>
           </div>
         </div>
